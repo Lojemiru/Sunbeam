@@ -1,0 +1,64 @@
+This is a demo provided to show off the QRT Lighting engine.
+
+FEATURES:
+	You can render ANYTHING to the collision surface, moving or not as long as it
+	has an alpha of 1 (entirely opaque) and it will affect the lighting in the game.
+	
+	Lights have a source RGB (center of light) and destination RGB (edge of light)
+	so that you can dynamically control the light's color range.
+	
+	All lights are dynamic, none of them are statically rendered, entirely real-time.
+	
+	All light properties: x,y, RGB src, RGB dst, radius can all be adjusted dynamically in real-time.
+	
+	Light sizes can be anywhere between 0 and 4096 px in radius.
+	
+	Lights are optimized so that their surface texture sizes are as minimal as possible
+	relative to the number of rays the light is casting.
+	
+	FUN FACT: You can emulate a "flashlight," by rendering a v-shaped collision to the collision
+	surface around a particular light. Neato.
+	
+ADVANCED FEATURES:
+	I have separated out the tonemap function in the Shd_LightSampler shader if you'd like to
+	create a cusotm tonemap.
+	
+	You can adjust the blending mode at the bottom of the Scr_QRTRender script.
+
+A couple of side features have been added for testing to show how you'd implement
+this into a game with moving views, etc.
+
+CONTROL:
+	Mouse Buttons : Create Light
+	Mouse Scroll  : Zoom
+	Arrow Keys    : Move View
+
+OPTIONAL STUFF:
+	The Obj_GameWindow and Obj_GameCamera are entirely option and not necessary for
+	using the QRT system, they're included in this example for testing purposes.
+
+	If your view never changes X,Y positions from 0,0 in the room you can pass 0,0
+	as the view position in the Scr_QRTRender script rather than the view position.
+
+ABOUT VIEWS:
+	The view system I implemented here uses a "physical," and "virtual," view model.
+	Where the physical view is the actual GameMaker view rendered. While the virtual
+	view is the "zoomed in," view position.
+	
+	In the Obj_GameCamera:
+		camera_x, camera_y, camera_w, camera_h
+			all refer to the physical view model.
+			
+		render_x, render_y, render_w, render_h
+			all refer to the virtual view model.
+			
+	The system will automatically track light/collision positions relative to the view
+	given the provided view position to the Scr_QRTRender as well as the custom script
+	Scr_MyCollisionRenderer (which renders collisions to a surface to affect the lighting).
+	
+RENDERING vs PLACING POSITIONS:
+	When rendering anything to the QRT lighting system use the physical view model position
+	(camera_x and camera_y) as this will render them relative to the actual view.
+	
+	When "placing," or tracking objects use the virtual view position (what the player sees),
+	as that is what will be affected by the mouse or whatever controls.
